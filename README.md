@@ -7,6 +7,7 @@ This is useful for decrypting and encrypting stuff, decompressing and so on.
 
 This tool extract the asm and prepare it to be compilable on a out.asm file, and also prepare the c file to call the asm algorithm.
 
+Powered by Radare.
 
 ### Usage
     python3 reasm.py [binary name] [start address] [end address]
