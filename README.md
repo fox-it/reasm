@@ -23,4 +23,5 @@ For example formbook use standard algorithms but modified:
 ![rc4 modified](pics/fb_rc4.png)
 ![b64](pics/fb_b64.png)
 ![main](pics/fb_main.png)
+![encrypted](pics/fb_encrypted.png)
 
