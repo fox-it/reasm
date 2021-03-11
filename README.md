@@ -25,3 +25,6 @@ For example formbook use standard algorithms but modified:
 ![main](pics/fb_main.png)
 ![encrypted](pics/fb_encrypted.png)
 
+The Makefile:
+![makefile](pics/fb_makefile.png)
+
