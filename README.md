@@ -1,11 +1,11 @@
 # reasm
-Extract algorithms of the malware and re-compile it on linux for decrypting stuff using same malware algorithms.
+Extract algorithms of the malware windows 32bits and re-compile it on linux for decrypting stuff using same malware algorithms.
 
-There are algorithms in the malwre complex to implement in python and they are changing all the time the algorithm so why no executing their asm instead implementing it in python?
+There are algorithms in the malwre complex to implement in python or other language, and they are changing all the time the implementation, so why no executing their decryption logic instead implementing it in other language?
 
 This is useful for decrypting and encrypting stuff, decompressing and so on.
 
-This tool extract the asm and prepare it to be compilable on a out.asm file, and also prepare the c file to call the asm algorithm.
+This tool extract the asm and prepare it to be compilable with nasm, and also prepare the asm and c file to trigger the algorithm.
 
 Powered by Radare.
 
