@@ -10,10 +10,10 @@ This tool extract the asm and prepare it to be compilable with nasm, and also pr
 Powered by Radare.
 
 ### Usage
-    python3 reasm.py [binary name] [start address] [end address]
+    python3 reasm.py [binary name] [function name] [start address] [end address]
 
     example:
-        python3 reasm.py malware_dump.bin 0x04f6bb50 0x0x04f6bc76
+        ./reasm.py malware_dump.bin decrypt 0x04f6bb50 0x0x04f6bc76
 
 
 ### Pics

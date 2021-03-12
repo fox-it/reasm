@@ -17,17 +17,18 @@ import r2pipe
 
 
 def usage():
-    print('%s [binary name] [begin addr] [end addr]  ' % sys.argv[0])
+    print('%s [binary name] [function name] [begin addr] [end addr]  ' % sys.argv[0])
     sys.exit(1)
 
 
-if len(sys.argv) != 4:
+if len(sys.argv) != 5:
     usage()
 
 
 binaryname = sys.argv[1]
-addr_begin = int(sys.argv[2].replace('0x','').replace('h',''), 16)
-addr_end = int(sys.argv[3].replace('0x','').replace('h',''), 16)+1
+functionname = sys.argv[2]
+addr_begin = int(sys.argv[3].replace('0x','').replace('h',''), 16)
+addr_end = int(sys.argv[4].replace('0x','').replace('h',''), 16)+1
 
 
 if addr_end < addr_begin:
@@ -77,7 +78,7 @@ for i in range(len(asm)):
 
 
 # second round put the labels
-nasm = ['; generated with reasm', '; nasm -felf32 -Fdwarf out.asm -o out.o', '', 'bits 32', 'global noname', '', 'noname:']
+nasm = ['; generated with reasm', '; nasm -felf32 -Fdwarf %s.asm -o %s.o' % (functionname,functionname), '', 'bits 32', 'global %s' % functionname, '', '%s:' % functionname]
 for i in range(len(asm)):
     ins = asm[i]
     ins = ins.strip()
@@ -93,9 +94,9 @@ for i in range(len(asm)):
     nasm.append('\t'+nemonic)
 
 
-open('out.asm', 'w').write('\n'.join(nasm))
+open('%s.asm' % functionname, 'w').write('\n'.join(nasm))
 
-print('out.asm generated, compile with nasm -felf32 -Fdwarf out.asm -o out.o')
+print('%s.asm generated, compile with nasm -felf32 -Fdwarf %s.asm -o %s.o' % (functionname,functionname,functionname))
 
 # Create main
 main='''
@@ -116,7 +117,12 @@ int main(void) {
     decoder();
     return 0;
 }
-'''
+'''.replace('decoder', functionname)
 open('main.c','w').write(main)
 
-
+makefile='''
+all:
+\tnasm -felf32 -Fdwarf decrypt.asm -o decrypt.o
+\tgcc -m32 main.c decrypt.o -o main
+'''.replace('decrypt', functionname)
+open('Makefile','w').write(makefile)
