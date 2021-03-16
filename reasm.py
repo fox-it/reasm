@@ -101,7 +101,7 @@ print('%s.asm generated, compile with nasm -felf32 -Fdwarf %s.asm -o %s.o' % (fu
 # Create main
 main='''
 // launch from c the algorithm on asm
-#include "stdio.h"
+#include <stdio.h>
 #include <stdlib.h>
 
 #define ASM __asm__ __volatile__
