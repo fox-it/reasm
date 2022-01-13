@@ -14,8 +14,6 @@
 import re
 import sys
 import r2pipe
-#from capstone import *
-#from capstone.x86 import *
 
 def usage():
     print('%s [binary name] [function name] [begin addr] [end addr]  ' % sys.argv[0])
