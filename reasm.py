@@ -14,7 +14,8 @@
 import re
 import sys
 import r2pipe
-
+#from capstone import *
+#from capstone.x86 import *
 
 def usage():
     print('%s [binary name] [function name] [begin addr] [end addr]  ' % sys.argv[0])
@@ -40,9 +41,11 @@ sz = addr_end - addr_begin
 print('parsing %s from 0x%x to 0x%x sz: %d' % (binaryname, addr_begin, addr_end, sz))
 
 r2 = r2pipe.open(binaryname)
+print('opened with radare')
 r2.cmd('s 0x%x' % addr_begin)
 r2.cmd('e asm.bytes=0')
 r2.cmd('e asm.lines=0')
+print('dumping asm')
 asm = r2.cmd('pD %d' % (addr_end-addr_begin)).split('\n')
 
 
@@ -50,8 +53,6 @@ asm = r2.cmd('pD %d' % (addr_end-addr_begin)).split('\n')
 #                   =
 branches = ['call', 'jmp', 'je', 'jl', 'jg', 'jge', 'gle', 'ja', 'jb', 'jbe', 'jae', 'jne', 'jo', 'jno', 'js', 'jns', 'jnz', 'jnb', 'jna',
             'jnae', 'jc', 'jnc', 'jnbe', 'jnge', 'jnl', 'jng', 'jle', 'jp', 'jpe','jnp','jpo','jcxz','jecxz']
-
-
 
 refs = []
 for i in range(len(asm)):
@@ -73,8 +74,19 @@ for i in range(len(asm)):
                 print('bad int: %s   %s' % (ref,ins))
             refs.append('0x%.8x' % naddr)
             asm[i] = asm[i].replace(ref, 'addr_%.8x' % naddr)
-    if opcode == 'lea':
+    elif opcode == 'lea':
         asm[i] = asm[i].replace('dword', '')
+        asm[i] = asm[i].replace('word', '')
+        asm[i] = asm[i].replace('byte', '')
+    elif opcode == 'stosd':
+        off = asm[i].find('stosd')
+        asm[i] = asm[i][:off+5] 
+    elif opcode == 'stosw':
+        off = asm[i].find('stosw')
+        asm[i] = asm[i][:off+5] 
+    elif opcode == 'stosb':
+        off = asm[i].find('stosb')
+        asm[i] = asm[i][:off+5] 
 
 
 # second round put the labels
